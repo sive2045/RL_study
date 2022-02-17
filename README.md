@@ -4,6 +4,8 @@
 
 ## What I'm currently studying 👀
 * Tutorials of RL[3], 2022-02-12 ~
+  - Ch1. Introduction 2022-02-12 ~ 2022-02-17
+  - Ch2. Multi-armed Bandits 2022-02-17 ~
 
 ## List of things I've completed ✨
 * TBD
