@@ -11,7 +11,11 @@
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 from tqdm import trange
+
+# Ge the current working directory (cwd)
+current_path = os.path.dirname(os.path.abspath(__file__))
 
 matplotlib.use('Agg')
 
@@ -119,7 +123,7 @@ def figure_2_1():
     plt.violinplot(dataset=np.random.randn(200, 10) + np.random.randn(10))
     plt.xlabel("Action")
     plt.ylabel("Reward distribution")
-    plt.savefig('./images/figure_2_1.png')
+    plt.savefig(current_path + '/images/figure_2_1.png')
     plt.close()
 
 
@@ -144,7 +148,7 @@ def figure_2_2(runs=2000, time=1000):
     plt.ylabel('% optimal action')
     plt.legend()
 
-    plt.savefig('./images/figure_2_2.png')
+    plt.savefig(current_path + '/images/figure_2_2.png')
     plt.close()
 
 
@@ -160,7 +164,7 @@ def figure_2_3(runs=2000, time=1000):
     plt.ylabel('% optimal action')
     plt.legend()
 
-    plt.savefig('./images/figure_2_3.png')
+    plt.savefig(current_path + '/images/figure_2_3.png')
     plt.close()
 
 
@@ -176,7 +180,7 @@ def figure_2_4(runs=2000, time=1000):
     plt.ylabel('Average reward')
     plt.legend()
 
-    plt.savefig('./images/figure_2_4.png')
+    plt.savefig(current_path + '/images/figure_2_4.png')
     plt.close()
 
 
@@ -198,7 +202,7 @@ def figure_2_5(runs=2000, time=1000):
     plt.ylabel('% Optimal action')
     plt.legend()
 
-    plt.savefig('./images/figure_2_5.png')
+    plt.savefig(current_path + '/images/figure_2_5.png')
     plt.close()
 
 
@@ -231,14 +235,14 @@ def figure_2_6(runs=2000, time=1000):
     plt.ylabel('Average reward')
     plt.legend()
 
-    plt.savefig('./images/figure_2_6.png')
+    plt.savefig(current_path + '/images/figure_2_6.png')
     plt.close()
 
 
-#if __name__ == '__main__':
-#    figure_2_1()
-#    figure_2_2()
-#    figure_2_3()
-#    figure_2_4()
-#    figure_2_5()
-#    figure_2_6()
+if __name__ == '__main__':
+    figure_2_1()
+    figure_2_2()
+    figure_2_3()
+    figure_2_4()
+    figure_2_5()
+    figure_2_6()
