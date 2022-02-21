@@ -14,7 +14,7 @@ import numpy as np
 import os
 from tqdm import trange
 
-# Ge the current working directory (cwd)
+# Get the current file directory
 current_path = os.path.dirname(os.path.abspath(__file__))
 
 matplotlib.use('Agg')
