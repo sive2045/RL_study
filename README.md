@@ -7,7 +7,7 @@
   - Ch1. Introduction 2022-02-12 ~ 2022-02-17
   - Ch2. Multi-armed Bandits 2022-02-17 ~
 
-## List of things I've completed ✨
+## List of papers I've completed ✨
 * TBD
 
 ### ENV
