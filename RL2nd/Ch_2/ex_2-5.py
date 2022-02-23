@@ -14,7 +14,7 @@ matplotlib.use('Agg')
 
 class BanditNonStationary(Bandit):
     """
-    overide Bandit class
+    overloading Bandit class
     """
     def __init__(self, k_arm=10, epsilon=0., initial=0., step_size=0.1, sample_averages=False, UCB_param=None,
                  gradient=False, gradient_baseline=False, true_reward=0., exp_weighted=False):
