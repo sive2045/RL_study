@@ -16,11 +16,27 @@ class BanditNonStationary(Bandit):
     """
     overide Bandit class
     """
-    def __init__(self, non_stationary=False):
-        self.non_stationary = non_stationary
+    def __init__(self, k_arm=10, epsilon=0., initial=0., step_size=0.1, sample_averages=False, UCB_param=None,
+                 gradient=False, gradient_baseline=False, true_reward=0., exp_weighted=False):
+        self.k = k_arm
+        self.step_size = step_size
+        self.sample_averages = sample_averages
+        self.indices = np.arange(self.k)
+        self.time = 0
+        self.UCB_param = UCB_param
+        self.gradient = gradient
+        self.gradient_baseline = gradient_baseline
+        self.average_reward = 0
+        self.true_reward = true_reward
+        self.epsilon = epsilon
+        self.initial = initial
+        self.exp_weighted = exp_weighted
         
     # take an action, update estimation for this action
     def step(self, action):
+        # non-stationary
+        self.q_true += np.random.randn(self.k)
+        self.best_action = np.argmax(self.q_true)
         # generate the reward under N(real reward, 1)
         reward = np.random.randn() + self.q_true[action]
         self.time += 1
@@ -38,9 +54,56 @@ class BanditNonStationary(Bandit):
             else:
                 baseline = 0
             self.q_estimation += self.step_size * (reward - baseline) * (one_hot - self.action_prob)
-        elif self.non_stationary:
-            self.q_estimation[action] += (reward - self.q_estimation[action]) / self.step_size
+        elif self.exp_weighted:
+            self.q_estimation[action] += (reward - self.q_estimation[action]) * self.step_size
         else:
             # update estimation with constant step size
             self.q_estimation[action] += self.step_size * (reward - self.q_estimation[action])
         return reward
+
+def simulate(runs, time, bandits):
+    rewards = np.zeros((len(bandits), runs, time))
+    best_action_counts = np.zeros(rewards.shape)
+    for i, bandit in enumerate(bandits):
+        for r in trange(runs):
+            bandit.reset()
+            for t in range(time):
+                action = bandit.act()
+                reward = bandit.step(action)
+                rewards[i, r, t] = reward
+                if action == bandit.best_action:
+                    best_action_counts[i, r, t] = 1
+    mean_best_action_counts = best_action_counts.mean(axis=1)
+    mean_rewards = rewards.mean(axis=1)
+    return mean_best_action_counts, mean_rewards
+
+
+def figure_ex_2_5(runs=2000, time=10_000):
+    # cal
+    bandit = []
+    bandit.append(BanditNonStationary(epsilon=0.1, exp_weighted=True))
+    bandit.append(BanditNonStationary(epsilon=0.1, sample_averages=True))
+    best_action_counts, avg_reward = simulate(runs, time, bandit)
+
+    # plot
+    plt.figure(figsize=(10, 20))
+
+    plt.subplot(2, 1, 1)
+    plt.plot(best_action_counts[0], label='Exponential Recency Weighted Meothd')
+    plt.plot(best_action_counts[1], label='Samepl Average Method')
+    plt.xlabel('Number of iterations'); plt.ylabel('% Optimal action')
+    plt.legend()
+
+    plt.subplot(2, 1, 2)
+    plt.plot(avg_reward[0], label='Exponential Recency Weighted Meothd')
+    plt.plot(avg_reward[1], label='Samepl Average Method')
+    plt.xlabel('Number of iterations'); plt.ylabel('% Average Reward')
+    plt.legend()
+
+    plt.savefig(current_path + '/images/figure_ex_2_5.png')
+    plt.close()
+
+if __name__ == '__main__':
+    print("Start the processing....")
+    figure_ex_2_5()
+    print('Processing completed')

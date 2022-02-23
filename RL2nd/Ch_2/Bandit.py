@@ -46,7 +46,7 @@ class Bandit:
 
     def reset(self):
         # real reward for each action
-        self.q_true = np.random.randn(self.k) + self.true_reward
+        self.q_true = self.true_reward
 
         # estimation for each action
         self.q_estimation = np.zeros(self.k) + self.initial
