@@ -143,6 +143,6 @@ def figure_ex_2_11(runs=2000, time=10_000):
 
 if __name__ == '__main__':
     print("Start the processing....")
-    #figure_ex_2_5()
-    figure_ex_2_11()
+    figure_ex_2_5()
+    figure_ex_2_11() # processing time : 310 min
     print('Processing completed')
