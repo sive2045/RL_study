@@ -5,7 +5,8 @@
 ## What I'm currently studying 👀
 * Tutorials of RL[3], 2022-02-12 ~
   - Ch1. Introduction 2022-02-12 ~ 2022-02-17
-  - Ch2. Multi-armed Bandits 2022-02-17 ~
+  - Ch2. Multi-armed Bandits 2022-02-17 ~ 2022-02-23
+  - Ch3. Finite Markov Decision Processes(MDP) 2022-02-24 ~
 
 ## List of papers I've completed ✨
 * TBD
