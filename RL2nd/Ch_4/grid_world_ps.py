@@ -15,12 +15,12 @@ ACTIONS = [np.array([0, -1]),
            np.array([1, 0])]
 ACTION_PROB = 0.25 # Uniform distribution
 
-def is_termail(state):
+def is_terminal(state):
     x, y = state
     return (x == 0 and y == 0) or (x == WORLD_SIZE -1 and y == WORLD_SIZE -1)
 
 def step(state, action):
-    if is_termail(state):
+    if is_terminal(state):
         return state, 0
 
     next_state = (np.array(state) + action).tolist()
@@ -55,6 +55,10 @@ def draw_image(image):
 
 # core-algorithm: Iterative Policy Evalution, for estimating value
 def compute_state_value(in_place=True, discount=1.0):
+    """
+    p.97
+    pseudocode의 구현
+    """
     new_state_values = np.zeros((WORLD_SIZE, WORLD_SIZE))
     iteration = 0
     while True:
@@ -89,7 +93,7 @@ def draw_figure_4_1_1():
     plt.close()
 
 def draw_figure_4_1_2():
-    values, sync_iteration = compute_state_value(in_place=True)
+    values, sync_iteration = compute_state_value(in_place=False)
     draw_image(np.round(values, decimals=2))
     print(f'Synchronous: {sync_iteration} iterations')
 
