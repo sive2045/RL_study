@@ -7,7 +7,9 @@
   - Ch1. Introduction 2022-02-12 ~ 2022-02-17
   - Ch2. Multi-armed Bandits 2022-02-17 ~ 2022-02-23
   - Ch3. Finite Markov Decision Processes(MDP) 2022-02-24 ~ 2022-03-03
-  - Ch4. Dynamic Programming(DP) 2022-03-05 ~ 2022-03-12
+  - Ch4. Dynamic Programming(DP) 2022-03-05 ~ 2022-03-14
+  - Ch5. Monte Carlo Methods(MC) 2022-03-15 ~ 2022-03-30 
+  - Ch6. Temporal-Difference(DF) Learning 2022-03-30 ~
 
 ## List of papers I've completed ✨
 * TBD
