@@ -56,14 +56,16 @@ def step(state, action):
         else:
             WIND_ = WIND_SUB
 
+    print(f'wind : {WIND_}, action : {action}')
+    
     if action == ACTION_UP:
         return [min(max(i - 1 - WIND_[j], 0), WORLD_HEIGHT -1), j] # j -> i
     elif action == ACTION_DOWN:
         return [max(min(i + 1 - WIND_[j], WORLD_HEIGHT - 1), 0), j]
     elif action == ACTION_LEFT:
-        return [max(i - WIND_[j], 0), max(j - 1, 0)]
+        return [min(max(i - WIND_[j], 0), WORLD_HEIGHT - 1), max(j - 1, 0)]
     elif action == ACTION_RIGHT:
-        return [max(i - WIND_[j], 0), min(j + 1, WORLD_WIDTH - 1)]
+        return [min(max(i - WIND_[j], 0), WORLD_HEIGHT - 1), min(j + 1, WORLD_WIDTH - 1)]
     elif action == ACTION_LEFT_UP:
         return [min(max(i - 1 - WIND_[j], 0), WORLD_HEIGHT -1), max(j - 1, 0)]
     elif action == ACTION_RIGHT_UP:
