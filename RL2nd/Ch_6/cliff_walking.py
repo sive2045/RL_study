@@ -98,6 +98,7 @@ def sarsa(q_value, expected=False, step_size=ALPHA):
             target = q_value[next_state[0], next_state[1], next_action]
         else:
             # calculate the expected value of new state
+            # for 문 해석 중요!
             target = 0.0
             q_next = q_value[next_state[0], next_state[1], :]
             best_actions = np.argwhere(q_next == np.max(q_next))
