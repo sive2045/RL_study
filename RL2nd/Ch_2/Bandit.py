@@ -29,8 +29,9 @@ class Bandit:
     # @UCB_param: if not None, use UCB algorithm to select action
     # @gradient: if True, use gradient based bandit algorithm
     # @gradient_baseline: if True, use average reward as baseline for gradient based bandit algorithm
+    # @nonstationary: if Ture, make nonstationary env
     def __init__(self, k_arm=10, epsilon=0., initial=0., step_size=0.1, sample_averages=False, UCB_param=None,
-                 gradient=False, gradient_baseline=False, true_reward=0.):
+                 gradient=False, gradient_baseline=False, true_reward=0., nonstationary=False):
         self.k = k_arm
         self.step_size = step_size
         self.sample_averages = sample_averages
@@ -43,10 +44,11 @@ class Bandit:
         self.true_reward = true_reward
         self.epsilon = epsilon
         self.initial = initial
+        self.nonstationary = nonstationary
 
     def reset(self):
         # real reward for each action
-        self.q_true = self.true_reward
+        self.q_true = np.random.randn(self.k) + self.true_reward
 
         # estimation for each action
         self.q_estimation = np.zeros(self.k) + self.initial
@@ -79,6 +81,9 @@ class Bandit:
 
     # take an action, update estimation for this action
     def step(self, action):
+        if self.nonstationary:
+            self.q_true += np.random.randn(self.k)
+            self.best_action = np.argmax(self.q_true)
         # generate the reward under N(real reward, 1)
         reward = np.random.randn() + self.q_true[action]
         self.time += 1
@@ -97,9 +102,9 @@ class Bandit:
                 baseline = 0
             self.q_estimation += self.step_size * (reward - baseline) * (one_hot - self.action_prob)
         else:
-            # update estimation with constant step size
+            # update estimation with constant step size, it is default
             self.q_estimation[action] += self.step_size * (reward - self.q_estimation[action])
-        return reward
+        return reward 
 
 
 def simulate(runs, time, bandits):
@@ -167,6 +172,26 @@ def figure_2_3(runs=2000, time=1000):
     plt.savefig(current_path + '/images/figure_2_3.png')
     plt.close()
 
+def figure_2_3_1(runs=2_000, time=1_000):
+    """
+    Optimistic inital values in nonstationary case and 
+    sample-average action-value methods
+    """
+    bandits = []
+    bandits.append(Bandit(epsilon=0, initial=5, step_size=0.1))
+    bandits.append(Bandit(epsilon=0, initial=5, step_size=0.1, nonstationary=True))
+    best_action_counts, _ = simulate(runs, time, bandits)
+
+    plt.plot(best_action_counts[0], label='Statinoary case')
+    plt.plot(best_action_counts[1], label='Nonstationary case')
+    plt.xlabel('Steps')
+    plt.ylabel('% optimal action')
+    plt.legend()
+
+    plt.savefig(current_path + '/images/figure_2_3_1.png')
+    plt.close()
+
+
 
 def figure_2_4(runs=2000, time=1000):
     bandits = []
@@ -183,6 +208,23 @@ def figure_2_4(runs=2000, time=1000):
     plt.savefig(current_path + '/images/figure_2_4.png')
     plt.close()
 
+def figure_2_4_1(runs=2000, time=1000):
+    """
+    const step size
+    """
+    bandits = []
+    bandits.append(Bandit(epsilon=0, UCB_param=2, step_size=0.1))
+    bandits.append(Bandit(epsilon=0, UCB_param=2, step_size=0.1, nonstationary=True))
+    best_action_counts, _ = simulate(runs, time, bandits)
+
+    plt.plot(best_action_counts[0], label='UCB $c = 2$ in stationary')
+    plt.plot(best_action_counts[1], label='UCB $c = 2$ in nonstationary')
+    plt.xlabel('Steps')
+    plt.ylabel('% optimal action')
+    plt.legend()
+
+    plt.savefig(current_path + '/images/figure_2_4_1.png')
+    plt.close()
 
 def figure_2_5(runs=2000, time=1000):
     bandits = []
@@ -205,6 +247,23 @@ def figure_2_5(runs=2000, time=1000):
     plt.savefig(current_path + '/images/figure_2_5.png')
     plt.close()
 
+def figure_2_5_1(runs=2000, time=1000):
+    bandits = []
+    bandits.append(Bandit(gradient=True, step_size=0.1, gradient_baseline=True, true_reward=4))
+    bandits.append(Bandit(gradient=True, step_size=0.1, gradient_baseline=True, true_reward=4, nonstationary=True))
+    best_action_counts, _ = simulate(runs, time, bandits)
+
+    labels = [r'$\alpha = 0.1$, in statinoary',
+              r'$\alpha = 0.1$, in nonstationary']
+
+    for i in range(len(bandits)):
+        plt.plot(best_action_counts[i], label=labels[i])          
+    plt.xlabel('Steps')
+    plt.ylabel('% Optimal action')
+    plt.legend()
+
+    plt.savefig(current_path + '/images/figure_2_5_1.png')
+    plt.close()
 
 def figure_2_6(runs=2000, time=1000):
     labels = ['epsilon-greedy', 'gradient bandit',
@@ -243,6 +302,9 @@ if __name__ == '__main__':
     figure_2_1()
     figure_2_2()
     figure_2_3()
+    figure_2_3_1()
     figure_2_4()
+    figure_2_4_1()
     figure_2_5()
+    figure_2_5_1()
     figure_2_6()
