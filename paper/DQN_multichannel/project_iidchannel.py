@@ -15,33 +15,21 @@ threshold = 0.5
 def iid_channel(transition_prob):
 
     if sum(Channel) == 1600:
-
         iidchannel = np.random.normal(0, 1, size=16)
 
         for i in range(len(Channel)):
-
             if iidchannel[i] > threshold:
                 Channel[i] = 1
             else:
                 Channel[i] = 0
-
-
     else:
-
         for i in range(len(Channel)):
-
             prob = random.random()
-
             if prob < transition_prob:
-
                 if Channel[i] == 1:
-
                     Channel[i] = 0
-
                 else:
-
                     Channel[i] = 1
-
     return Channel
 
 
@@ -49,11 +37,8 @@ def Sensing_action(Select_channel, Channel):
     User_observation = np.zeros(len(Channel))
 
     if Channel[Select_channel] == 1:
-
         User_observation[Select_channel] = 1
-
     elif Channel[Select_channel] != 1:
-
         User_observation[Select_channel] = -1
 
     return User_observation
@@ -167,25 +152,16 @@ if __name__ == "__main__":
     channel_look = np.zeros([16,16])
     k = 0
     for e in range(EPISODES):
-
         if e == 0:
-
             for i in range(channel_size):  # state 초기화 random select
-
                 Select_channel = random.randrange(channel_size)
                 channel = iid_channel(transition_probability)
                 channel_look[i] = channel
                 observation = Sensing_action(Select_channel, channel)
-
-
                 if i == 1:
-
                     state_nonreshape = np.vstack([past_observation, observation])
-
                 elif i == 0:
-
                     past_observation = observation
-
                 else:
                     state_nonreshape = np.vstack([state_nonreshape, observation])
 
