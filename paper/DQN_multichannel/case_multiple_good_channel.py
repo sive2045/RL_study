@@ -30,3 +30,13 @@ def make_multiple_good_channel_model(switching_prob=0.9, channel_size=16, time_s
     
     print(f'Channel Set: \n{channels}')
     return channels
+
+def sensing_action(select_channel_idx, channel):
+    user_observation = np.zeros(len(channel))
+
+    if channel[select_channel_idx] == 1:
+        user_observation[select_channel_idx] = 1
+    else:
+        user_observation[select_channel_idx] = -1
+    
+    return user_observation
