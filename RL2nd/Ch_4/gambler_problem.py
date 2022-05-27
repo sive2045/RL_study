@@ -81,11 +81,12 @@ def sol_ex_4_3(prob_h):
     plt.xlabel('Capital')
     plt.ylabel('Final policy (stake)')
     plt.grid()
-    plt.savefig(current_path + '/images/figure_4_3.png')
+    plt.savefig(current_path + '/images/figure_4_3_50.png')
     plt.close()
     print('done!')
 
 if __name__ == '__main__':
     #sol_ex_4_3(0.25)
     #sol_ex_4_3(0.55)
-    sol_ex_4_3(0.10)
+    #sol_ex_4_3(0.10)
+    sol_ex_4_3(0.50)
